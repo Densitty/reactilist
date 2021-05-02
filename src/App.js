@@ -1,54 +1,77 @@
-import React, { useState } from "react";
-import Menu from "./Menu";
-import Categories from "./Categories";
-import items from "./data";
+import React, { useState, useEffect } from "react";
+import { FaAngleDoubleRight } from "react-icons/fa";
 
-/*
-const catList = ["all"];
-items.map((item) => {
-  if (catList.indexOf(item.category) === -1) {
-    catList.push(item.category);
-  }
-  return catList;
-});
-console.log(catList);
-*/
-
-const allCategories = ["all", ...new Set(items.map((item) => item.category))];
-// console.log(allCategories);
+const url = "https://course-api.com/react-tabs-project";
 
 function App() {
-  const [menuItems, setMenuItems] = useState(items);
-  const [categories, setCategories] = useState(allCategories);
+  const [loading, setLoading] = useState(true);
+  const [workExperience, setWorkExperience] = useState([]);
+  const [value, setValue] = useState(0);
 
-  const filterItems = (category) => {
-    if (category === "all") {
-      setMenuItems(items);
-      // return from the function
-      return;
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      setWorkExperience(data);
+      setLoading(false);
+    } catch (e) {
+      console.log(e.message());
     }
-
-    const newItems = items.filter((item) => item.category === category);
-    setMenuItems(newItems);
   };
 
-  return (
-    <main>
-      <section className="menu-section">
-        <div className="title">
-          <h2>our menu</h2>
-          <div className="underline"></div>
-        </div>
-        {/* hard-coding the categories; done below */}
-        {/* <Categories filterCategories={filterItems} /> */}
-        {/* dynamically filling up the categories; done below */}
-        <Categories
-          menuCategories={categories}
-          filterCategories={filterItems}
-        />
-        <Menu items={menuItems} />
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  // while we are awaiting the data
+  if (loading) {
+    return (
+      <section className="section loading">
+        <h1>loading...</h1>
       </section>
-    </main>
+    );
+  }
+
+  const { company, dates, duties, title } = workExperience[value];
+
+  return (
+    <section className="section">
+      <div className="title">
+        <h2>Experience</h2>
+        <div className="underline"></div>
+      </div>
+      <div className="jobs-center">
+        {/* btn container */}
+        <div className="btn-container">
+          {workExperience.map((item, index) => {
+            return (
+              <button
+                key={item.id}
+                className={`job-btn ${index === value ? "active-btn" : ""}`}
+                onClick={() => setValue(index)}
+              >
+                {item.company}
+              </button>
+            );
+          })}
+        </div>
+        {/* workExperience info */}
+        <article className="job-info">
+          <h3>{title}</h3>
+          <h4>{company}</h4>
+          <p className="job-date">{dates}</p>
+          {duties.map((duty, index) => {
+            return (
+              <div key={index} className="job-desc">
+                <FaAngleDoubleRight className="job-icon" />
+                <p>{duty}</p>
+              </div>
+            );
+          })}
+        </article>
+      </div>
+    </section>
   );
 }
 
