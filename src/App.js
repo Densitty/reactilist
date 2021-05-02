@@ -1,19 +1,53 @@
 import React, { useState } from "react";
-import data from "./data";
-import SingleQuestion from "./Question";
+import Menu from "./Menu";
+import Categories from "./Categories";
+import items from "./data";
+
+/*
+const catList = ["all"];
+items.map((item) => {
+  if (catList.indexOf(item.category) === -1) {
+    catList.push(item.category);
+  }
+  return catList;
+});
+console.log(catList);
+*/
+
+const allCategories = ["all", ...new Set(items.map((item) => item.category))];
+// console.log(allCategories);
+
 function App() {
-  const [questions, setQuestions] = useState(data);
+  const [menuItems, setMenuItems] = useState(items);
+  const [categories, setCategories] = useState(allCategories);
+
+  const filterItems = (category) => {
+    if (category === "all") {
+      setMenuItems(items);
+      // return from the function
+      return;
+    }
+
+    const newItems = items.filter((item) => item.category === category);
+    setMenuItems(newItems);
+  };
 
   return (
     <main>
-      <div className="container">
-        <h3>FAQ on Login</h3>
-        <section className="info">
-          {questions.map((question) => {
-            return <SingleQuestion key={question.id} {...question} />;
-          })}
-        </section>
-      </div>
+      <section className="menu-section">
+        <div className="title">
+          <h2>our menu</h2>
+          <div className="underline"></div>
+        </div>
+        {/* hard-coding the categories; done below */}
+        {/* <Categories filterCategories={filterItems} /> */}
+        {/* dynamically filling up the categories; done below */}
+        <Categories
+          menuCategories={categories}
+          filterCategories={filterItems}
+        />
+        <Menu items={menuItems} />
+      </section>
     </main>
   );
 }
