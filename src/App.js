@@ -1,51 +1,55 @@
 import React, { useState } from "react";
-import data from "./data";
+import SingleColor from "./SingleColor";
+
+import Values from "values.js";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [text, setText] = useState([]);
+  const [color, setColor] = useState("");
+  const [error, setError] = useState(false);
+  const defaultColor = new Values("#f15025").all(10);
+  /* console.log(defaultColor); */
+  const [colorList, setColorList] = useState(defaultColor);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(typeof count);
-    /* count in state is initially set to 0 (an int) but the count got from setState is a string because of the <input> element, hence the need to convert it as below */
-    let amount = parseInt(count);
-
-    // if count is less than zero or zero
-    if (count <= 0) {
-      amount = 1;
+    // check whether value is a color or not
+    try {
+      let colors = new Values(color).all(10);
+      // console.log(colors);
+      setColorList(colors);
+    } catch (e) {
+      setError(true);
+      console.log(e.message);
     }
-
-    // if count set is more than items in the data array
-    if (count > data.length) {
-      amount = data.length;
-    }
-
-    setText(data.slice(0, amount));
   };
 
   return (
-    <section className="section-center">
-      <h3>tired of boring text?</h3>
-      <form className="lorem-form" onSubmit={(e) => handleSubmit(e)}>
-        <label htmlFor="amount">paragraphs:</label>
-        <input
-          type="number"
-          name="amount"
-          id="amount"
-          value={count}
-          onChange={(e) => setCount(e.target.value)}
-        />
-        <button type="submit" className="btn">
-          generate
-        </button>
-      </form>
-      <article className="lorem-text">
-        {text.map((item, index) => {
-          return <p key={index}>{item}</p>;
+    <>
+      <section className="container">
+        <h3>color generator</h3>
+        <form action="" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={color}
+            placeholder="#f15025"
+            className={`${error ? "error" : null}`}
+            onChange={(e) => setColor(e.target.value)}
+          />
+          <button type="submit" className="btn">
+            submit
+          </button>
+        </form>
+      </section>
+      <section className="colors">
+        {colorList.map((color, index) => {
+          // console.log(index);
+
+          return (
+            <SingleColor key={index} {...color} index={index} hex={color.hex} />
+          );
         })}
-      </article>
-    </section>
+      </section>
+    </>
   );
 }
 
