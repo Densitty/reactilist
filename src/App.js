@@ -1,9 +1,14 @@
 import React from "react";
-import Navbar from "./Navbar";
+import Modal from "./Modal";
+import Sidebar from "./Sidebar";
+import Home from "./Home";
+
 function App() {
   return (
     <>
-      <Navbar />
+      <Home />
+      <Modal />
+      <Sidebar />
     </>
   );
 }
