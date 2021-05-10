@@ -1,10 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, createContext } from "react";
+import sublinks from "./data";
 
 const AppContext = React.createContext();
 
-const AppProvider = (props) => {
+const AppProvider = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const [location, setLocation] = useState({});
+  const [page, setPage] = useState({ page: "", links: [] });
 
   const openSidebar = () => {
     setIsSidebarOpen(true);
@@ -14,33 +18,38 @@ const AppProvider = (props) => {
     setIsSidebarOpen(false);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openSubmenu = (text, coordinates) => {
+    setLocation(coordinates);
+    // to get the appropriate page
+    const page = sublinks.find((link) => link.page === text);
+    setPage(page);
+    setIsSubmenuOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeSubmenu = () => {
+    setIsSubmenuOpen(false);
   };
 
   return (
     <AppContext.Provider
       value={{
-        isModalOpen,
+        isSubmenuOpen,
         isSidebarOpen,
-        openModal,
-        closeModal,
         openSidebar,
         closeSidebar,
+        openSubmenu,
+        closeSubmenu,
+        location,
+        page,
       }}
     >
-      {props.children}
+      {children}
     </AppContext.Provider>
   );
 };
 
-// setup a custom hook - any name can be used as long as -use- prefixes it
-export const useGlobalContext = () => {
+const useGlobalContext = () => {
   return useContext(AppContext);
 };
 
-export { AppContext, AppProvider };
+export { AppContext, AppProvider, useGlobalContext };

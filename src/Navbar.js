@@ -1,60 +1,58 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaBars, FaTwitter } from "react-icons/fa";
-import { links, social } from "./data";
-import logo from "./logo.svg";
+import React from "react";
+import logo from "./images/logo.svg";
+import { FaBars } from "react-icons/fa";
+import { useGlobalContext } from "./context";
 
 const Navbar = () => {
-  const [showLinks, setShowLinks] = useState(false);
-  // to dynamically set the height of the div holding the links
-  const linksContainerRef = useRef(null);
-  const linksRef = useRef(null);
+  const { openSidebar, openSubmenu, closeSubmenu } = useGlobalContext();
 
-  useEffect(() => {
-    const linksHeight = linksRef.current.getBoundingClientRect().height;
-    console.log("height of the link div is: " + linksHeight);
+  const displaySubmenu = (e) => {
+    // get the target button
+    const targetBtn = e.target.getBoundingClientRect();
+    // get the center and the bottom of the target button
+    const center = (targetBtn.left + targetBtn.right) / 2;
+    // get the center of the targetBtn and raise it 3px up by subtracting 3px from it
+    const bottom = targetBtn.bottom - 3;
+    // get the title of the button hovered on
+    const pageToDisplay = e.target.textContent;
 
-    if (showLinks) {
-      linksContainerRef.current.style.height = `${linksHeight}px`;
-    } else {
-      linksContainerRef.current.style.height = "0px";
+    openSubmenu(pageToDisplay, { center, bottom });
+  };
+
+  const handleSubmenu = (e) => {
+    // when mouse hovers over any area not any of the buttons, close the submenu
+    if (!e.target.classList.contains("link-btn")) {
+      closeSubmenu();
     }
-  }, [showLinks]);
+  };
 
   return (
-    <nav>
+    <nav className="nav" onMouseOver={handleSubmenu}>
       <div className="nav-center">
         <div className="nav-header">
-          <img src={logo} alt="logo" />
-          <button
-            className="nav-toggle"
-            onClick={() => setShowLinks(!showLinks)}
-          >
+          <img className="nav-logo" src={logo} alt="logo" />
+          <button className="btn toggle-btn" onClick={openSidebar}>
             <FaBars />
           </button>
         </div>
-
-        <div className="links-container" ref={linksContainerRef}>
-          <ul className="links" ref={linksRef}>
-            {links.map((link) => {
-              return (
-                <li key={link.id}>
-                  <a href={link.url}>{link.text}</a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <ul className="social-icons">
-          {social.map((socialLink) => {
-            const { id, url, icon } = socialLink;
-            return (
-              <li key={id}>
-                <a href={url}>{icon}</a>
-              </li>
-            );
-          })}
+        <ul className="nav-links">
+          <li>
+            <button className="link-btn" onMouseOver={displaySubmenu}>
+              products
+            </button>
+          </li>
+          <li>
+            <button className="link-btn" onMouseOver={displaySubmenu}>
+              developers
+            </button>
+          </li>
+          <li>
+            <button className="link-btn" onMouseOver={displaySubmenu}>
+              company
+            </button>
+          </li>
         </ul>
+        <button className="btn signin-btn">sign in</button>
       </div>
     </nav>
   );

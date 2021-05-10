@@ -1,43 +1,44 @@
 import React from "react";
-import logo from "./logo.svg";
 import { FaTimes } from "react-icons/fa";
-import { social, links } from "./data";
-
-import { AppContext } from "./context";
+import sublinks from "./data";
+import { useGlobalContext } from "./context";
 
 const Sidebar = () => {
-  const { isSidebarOpen, closeSidebar } = React.useContext(AppContext);
+  const { isSidebarOpen, closeSidebar } = useGlobalContext();
+
   return (
-    <aside className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}>
-      <div className="sidebar-header">
-        <img src={logo} alt="logo" />
+    <aside
+      className={`${
+        isSidebarOpen ? "sidebar-wrapper show" : "sidebar-wrapper"
+      }`}
+    >
+      <div className="sidebar">
         <button className="close-btn" onClick={closeSidebar}>
           <FaTimes />
         </button>
+        <div className="sidebar-links">
+          {sublinks.map((sublink, index) => {
+            const { links, page } = sublink;
+
+            return (
+              <article key={index}>
+                <h4>{page}</h4>
+                <div className="sidebar-sublinks">
+                  {links.map((link, index) => {
+                    const { label, icon, url } = link;
+                    return (
+                      <a href={url} key={index}>
+                        {icon}
+                        {label}
+                      </a>
+                    );
+                  })}
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
-      <ul className="links">
-        {links.map((link) => {
-          const { id, url, icon, text } = link;
-          return (
-            <li key={id}>
-              <a href={url}>
-                {icon}
-                {text}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-      <ul className="social-icons">
-        {social.map((socialLink) => {
-          const { id, url, icon } = socialLink;
-          return (
-            <li key={id}>
-              <a href={url}>{icon}</a>
-            </li>
-          );
-        })}
-      </ul>
     </aside>
   );
 };

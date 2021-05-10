@@ -1,73 +1,30 @@
+import { FaCreditCard, FaBook, FaBriefcase } from "react-icons/fa";
 import React from "react";
-import {
-  FaBehance,
-  FaFacebook,
-  FaLinkedin,
-  FaTwitter,
-  FaSketch,
-  FaHome,
-  FaUserFriends,
-  FaFolderOpen,
-  FaCalendarAlt,
-  FaWpforms,
-} from "react-icons/fa";
-export const links = [
+const sublinks = [
   {
-    id: 1,
-    url: "/",
-    text: "home",
-    icon: <FaHome />,
+    page: "products",
+    links: [
+      { label: "payment", icon: <FaCreditCard />, url: "/products" },
+      { label: "terminal", icon: <FaCreditCard />, url: "/products" },
+      { label: "connect", icon: <FaCreditCard />, url: "/products" },
+    ],
   },
   {
-    id: 2,
-    url: "/team",
-    text: "team",
-    icon: <FaUserFriends />,
+    page: "developers",
+    links: [
+      { label: "plugins", icon: <FaBook />, url: "/products" },
+      { label: "libraries", icon: <FaBook />, url: "/products" },
+      { label: "help", icon: <FaBook />, url: "/products" },
+      { label: "billing", icon: <FaBook />, url: "/products" },
+    ],
   },
   {
-    id: 3,
-    url: "/projects",
-    text: "projects",
-    icon: <FaFolderOpen />,
-  },
-  {
-    id: 4,
-    url: "/calendar",
-    text: "calendar",
-    icon: <FaCalendarAlt />,
-  },
-  {
-    id: 5,
-    url: "/documents",
-    text: "documents",
-    icon: <FaWpforms />,
+    page: "company",
+    links: [
+      { label: "about", icon: <FaBriefcase />, url: "/products" },
+      { label: "customers", icon: <FaBriefcase />, url: "/products" },
+    ],
   },
 ];
 
-export const social = [
-  {
-    id: 1,
-    url: "https://www.twitter.com",
-    icon: <FaFacebook />,
-  },
-  {
-    id: 2,
-    url: "https://www.twitter.com",
-    icon: <FaTwitter />,
-  },
-  {
-    id: 3,
-    url: "https://www.twitter.com",
-    icon: <FaLinkedin />,
-  },
-  {
-    id: 4,
-    url: "https://www.twitter.com",
-    icon: <FaBehance />,
-  },
-  {
-    id: 5,
-    url: "https://www.twitter.com",
-    icon: <FaSketch />,
-  },
-];
+export default sublinks;
