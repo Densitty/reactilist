@@ -1,73 +1,26 @@
-import React from "react";
-import {
-  FaBehance,
-  FaFacebook,
-  FaLinkedin,
-  FaTwitter,
-  FaSketch,
-  FaHome,
-  FaUserFriends,
-  FaFolderOpen,
-  FaCalendarAlt,
-  FaWpforms,
-} from "react-icons/fa";
-export const links = [
+export default [
   {
     id: 1,
-    url: "/",
-    text: "home",
-    icon: <FaHome />,
+    title: "Samsung Galaxy S7",
+    price: 599.99,
+    img:
+      "https://res.cloudinary.com/diqqf3eq2/image/upload/v1583368215/phone-2_ohtt5s.png",
+    amount: 1,
   },
   {
     id: 2,
-    url: "/team",
-    text: "team",
-    icon: <FaUserFriends />,
+    title: "google pixel ",
+    price: 499.99,
+    img:
+      "https://res.cloudinary.com/diqqf3eq2/image/upload/v1583371867/phone-1_gvesln.png",
+    amount: 1,
   },
   {
     id: 3,
-    url: "/projects",
-    text: "projects",
-    icon: <FaFolderOpen />,
-  },
-  {
-    id: 4,
-    url: "/calendar",
-    text: "calendar",
-    icon: <FaCalendarAlt />,
-  },
-  {
-    id: 5,
-    url: "/documents",
-    text: "documents",
-    icon: <FaWpforms />,
-  },
-];
-
-export const social = [
-  {
-    id: 1,
-    url: "https://www.twitter.com",
-    icon: <FaFacebook />,
-  },
-  {
-    id: 2,
-    url: "https://www.twitter.com",
-    icon: <FaTwitter />,
-  },
-  {
-    id: 3,
-    url: "https://www.twitter.com",
-    icon: <FaLinkedin />,
-  },
-  {
-    id: 4,
-    url: "https://www.twitter.com",
-    icon: <FaBehance />,
-  },
-  {
-    id: 5,
-    url: "https://www.twitter.com",
-    icon: <FaSketch />,
+    title: "Xiaomi Redmi Note 2",
+    price: 699.99,
+    img:
+      "https://res.cloudinary.com/diqqf3eq2/image/upload/v1583368224/phone-3_h2s6fo.png",
+    amount: 1,
   },
 ];

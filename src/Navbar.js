@@ -1,60 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaBars, FaTwitter } from "react-icons/fa";
-import { links, social } from "./data";
-import logo from "./logo.svg";
-
+import React from "react";
+import { useGlobalContext } from "./context";
 const Navbar = () => {
-  const [showLinks, setShowLinks] = useState(false);
-  // to dynamically set the height of the div holding the links
-  const linksContainerRef = useRef(null);
-  const linksRef = useRef(null);
-
-  useEffect(() => {
-    const linksHeight = linksRef.current.getBoundingClientRect().height;
-    console.log("height of the link div is: " + linksHeight);
-
-    if (showLinks) {
-      linksContainerRef.current.style.height = `${linksHeight}px`;
-    } else {
-      linksContainerRef.current.style.height = "0px";
-    }
-  }, [showLinks]);
+  const { amount } = useGlobalContext();
 
   return (
     <nav>
       <div className="nav-center">
-        <div className="nav-header">
-          <img src={logo} alt="logo" />
-          <button
-            className="nav-toggle"
-            onClick={() => setShowLinks(!showLinks)}
-          >
-            <FaBars />
-          </button>
+        <h3>useReducer</h3>
+        <div className="nav-container">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M16 6v2h2l2 12H0L2 8h2V6a6 6 0 1 1 12 0zm-2 0a4 4 0 1 0-8 0v2h8V6zM4 10v2h2v-2H4zm10 0v2h2v-2h-2z" />
+          </svg>
+          <div className="amount-container">
+            <p className="total-amount">{amount}</p>
+          </div>
         </div>
-
-        <div className="links-container" ref={linksContainerRef}>
-          <ul className="links" ref={linksRef}>
-            {links.map((link) => {
-              return (
-                <li key={link.id}>
-                  <a href={link.url}>{link.text}</a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <ul className="social-icons">
-          {social.map((socialLink) => {
-            const { id, url, icon } = socialLink;
-            return (
-              <li key={id}>
-                <a href={url}>{icon}</a>
-              </li>
-            );
-          })}
-        </ul>
       </div>
     </nav>
   );
