@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Cocktail(props) {
-  const { name, category, glass, id, image, info, ingredients } = props;
+  const { name, glass, id, image, info } = props;
 
   return (
     <article className="cocktail">
