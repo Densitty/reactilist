@@ -1,15 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Error() {
+const Error = () => {
   return (
     <section className="error-page section">
       <div className="error-container">
-        <h1>Sorry! You have reached a dead end.</h1>
-        <Link to="/" className="btn btn-primary">
-          home page
+        <h1>Sorry! Page does not exist.</h1>
+        <Link to="/" className="btn-primary">
+          back home
         </Link>
       </div>
     </section>
   );
-}
+};
+
+export default Error;

@@ -1,38 +1,37 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import { useGlobalContext } from "../context";
 
-export default function SearchForm({ searchForm }) {
-  const searchValue = useRef("");
-  // console.log(searchValue);
+const SearchForm = () => {
+  const { setSearchTerm } = useGlobalContext();
+  const searchValue = React.useRef("");
 
-  /* calling componentDidMount() in a functional component; immediately the component loads, focus on the input element */
-  useEffect(() => {
-    searchValue.current.focus();
-  }, []);
+  const searchCocktail = () => {
+    setSearchTerm(searchValue.current.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
   };
 
-  const searchCocktail = () => {
-    searchForm(searchValue.current.value);
-    // console.log(searchValue.current.value);
-  };
+  React.useEffect(() => {
+    searchValue.current.focus();
+  }, []);
 
   return (
-    <section className="section">
-      <h2 className="section-title">search cocktails</h2>
-      <form action="" className="form search-form" onSubmit={handleSubmit}>
+    <section className="search section" onSubmit={handleSubmit}>
+      <form className="search-form">
         <div className="form-control">
-          <label htmlFor="cocktail_name">search your favourtie cocktail</label>
+          <label htmlFor="name">search your favorite cocktail</label>
           <input
             type="text"
-            name="cocktail"
-            id="cocktail_name"
-            onChange={searchCocktail}
+            id="name"
             ref={searchValue}
+            onChange={searchCocktail}
           />
         </div>
       </form>
     </section>
   );
-}
+};
+
+export default SearchForm;

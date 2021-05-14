@@ -1,17 +1,12 @@
 import React from "react";
-
-//since we are going link to a single cocktail
 import { Link } from "react-router-dom";
 
-export default function Cocktail(props) {
-  const { name, glass, id, image, info } = props;
-
+const Cocktail = ({ glass, id, image, info, name }) => {
   return (
     <article className="cocktail">
       <div className="img-container">
-        <img src={image} alt={name} />
+        <img src={image} alt="cocktail" />
       </div>
-
       <div className="cocktail-footer">
         <h3>{name}</h3>
         <h4>{glass}</h4>
@@ -22,4 +17,6 @@ export default function Cocktail(props) {
       </div>
     </article>
   );
-}
+};
+
+export default Cocktail;

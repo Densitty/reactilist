@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function About() {
+const About = () => {
   return (
     <section className="section about-section">
-      <h1 className="section-title">about us</h1>
+      <h2 className="section-title">about us</h2>
       <p>
         Getting the delicious drink to quench your thirst is our great delight
         at the CocktailsDB. <br />
@@ -13,4 +13,6 @@ export default function About() {
       </p>
     </section>
   );
-}
+};
+
+export default About;

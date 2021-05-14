@@ -2,11 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../logo.svg";
 
-export default function Navbar() {
+const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="nav-center">
-        <img src={logo} className="logo" alt="cocktail db logo" />
+        <Link to="/">
+          <img src={logo} alt="the cocktaildb logo" className="logo" />
+        </Link>
         <ul className="nav-links">
           <li>
             <Link to="/">Home</Link>
@@ -18,4 +20,6 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
