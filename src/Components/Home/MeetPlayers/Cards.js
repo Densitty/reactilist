@@ -34,7 +34,7 @@ class Cards extends Component {
 
   showAnimateCards = () => {
     return this.state.cards.map((card, idx) => {
-      console.log(card);
+      // console.log(card);
       return (
         <Animate
           key={idx}

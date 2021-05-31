@@ -22,7 +22,7 @@ const Blocks = () => {
   }, []);
 
   const showMatches = (matches) => {
-    console.log(matches);
+    // console.log(matches);
     return matches
       ? matches.map((match) => {
           return (
