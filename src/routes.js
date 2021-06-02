@@ -5,12 +5,13 @@ import { Switch, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import SignIn from "./Components/Signin";
 import Dashboard from "./Components/Admin/Dashboard";
+import AdminMatches from "./Components/Admin/matches";
 
 import PrivateRoutes from "./Components/AuthRoutes/PrivateRoutes";
 import PublicRoutes from "./Components/AuthRoutes/PublicRoutes";
 
 const Routes = (props) => {
-  console.log(props);
+  // console.log(props);
   return (
     <Layout>
       <Switch>
@@ -22,6 +23,13 @@ const Routes = (props) => {
           path="/dashboard"
           exact
           component={Dashboard}
+        />
+
+        <PrivateRoutes
+          {...props}
+          path="/admin_matches"
+          exact
+          component={AdminMatches}
         />
 
         {/* if a user is logged in, it shouldn't have access to '/sign_in' again; hence the reason for using restricted as props to help restrict access to '/sign_in' */}

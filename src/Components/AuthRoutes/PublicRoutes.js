@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 const PublicRoutes = (props) => {
-  console.log(props);
+  // console.log(props);
   const { user, component: Comp, ...rest } = props;
   return (
     <Route
