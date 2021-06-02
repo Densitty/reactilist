@@ -4,19 +4,24 @@ import Routes from "./routes";
 import "./Resources/css/app.css";
 
 import { BrowserRouter as Router } from "react-router-dom";
-import "./firebase";
+import { firebase } from "./firebase";
 
-const App = () => {
+const App = (props) => {
   return (
     <Router>
-      <Routes />
+      <Routes {...props} />
     </Router>
   );
 };
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+// setup authorization for private routes
+firebase.auth().onAuthStateChanged((user) => {
+  // console.log(user);
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <App user={user} />
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+});
