@@ -39,6 +39,7 @@ firebaseDB
 const firebaseDB = firebase.database();
 const matchesCollection = firebaseDB.ref("matches");
 const promotionsCollection = firebaseDB.ref("promotions");
+const teamsCollection = firebaseDB.ref("teams");
 /* firebaseDB
   .ref("matches")
   .once("value")
@@ -50,9 +51,10 @@ const promotionsCollection = firebaseDB.ref("promotions");
 
 export {
   firebase,
+  firebaseDB,
   matchesCollection,
   promotionsCollection,
+  teamsCollection,
   /* playersCollection,
-  positionsCollection,
-  teamsCollection, */
+  positionsCollection,*/
 };

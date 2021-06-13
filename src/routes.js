@@ -6,6 +6,7 @@ import Home from "./Components/Home";
 import SignIn from "./Components/Signin";
 import Dashboard from "./Components/Admin/Dashboard";
 import AdminMatches from "./Components/Admin/matches";
+import AddEditMatch from "./Components/Admin/matches/AddEditMatch";
 
 import PrivateRoutes from "./Components/AuthRoutes/PrivateRoutes";
 import PublicRoutes from "./Components/AuthRoutes/PublicRoutes";
@@ -30,6 +31,20 @@ const Routes = (props) => {
           path="/admin_matches"
           exact
           component={AdminMatches}
+        />
+
+        <PrivateRoutes
+          {...props}
+          path="/admin_matches/edit_match/:id"
+          exact
+          component={AddEditMatch}
+        />
+
+        <PrivateRoutes
+          {...props}
+          path="/admin_matches/edit_match"
+          exact
+          component={AddEditMatch}
         />
 
         {/* if a user is logged in, it shouldn't have access to '/sign_in' again; hence the reason for using restricted as props to help restrict access to '/sign_in' */}
