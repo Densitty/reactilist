@@ -9,6 +9,7 @@ import AdminMatches from "./Components/Admin/matches";
 import AddEditMatch from "./Components/Admin/matches/AddEditMatch";
 import AdminPlayers from "./Components/Admin/players";
 import AddEditPlayers from "./Components/Admin/players/AddEditPlayers";
+import Team from "./Components/Team";
 
 import PrivateRoutes from "./Components/AuthRoutes/PrivateRoutes";
 import PublicRoutes from "./Components/AuthRoutes/PublicRoutes";
@@ -85,6 +86,14 @@ const Routes = (props) => {
           path="/sign_in"
           exact
           component={SignIn}
+        />
+
+        <PublicRoutes
+          {...props}
+          restricted={false}
+          path="/the_team"
+          exact
+          component={Team}
         />
 
         {/* Public Routes set below are not redone as above */}
