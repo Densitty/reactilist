@@ -3,6 +3,7 @@ import "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/database";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBAEl6f13rX5MLkJOwuNk0zalGIq_04LLk",
@@ -40,6 +41,7 @@ const firebaseDB = firebase.database();
 const matchesCollection = firebaseDB.ref("matches");
 const promotionsCollection = firebaseDB.ref("promotions");
 const teamsCollection = firebaseDB.ref("teams");
+const playersCollection = firebaseDB.ref("players");
 /* firebaseDB
   .ref("matches")
   .once("value")
@@ -55,6 +57,6 @@ export {
   matchesCollection,
   promotionsCollection,
   teamsCollection,
-  /* playersCollection,
-  positionsCollection,*/
+  playersCollection,
+  /*positionsCollection,*/
 };

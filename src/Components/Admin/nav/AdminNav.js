@@ -13,8 +13,8 @@ const AdminNav = (props) => {
   const links = [
     { title: "Matches", linkTo: "/admin_matches" },
     { title: "Add Match", linkTo: "/admin_matches/edit_match" },
-    { title: "Player", linkTo: "/admin_players" },
-    { title: "Add Players", linkTo: "/admin_matches/add_player" },
+    { title: "Players", linkTo: "/admin_players" },
+    { title: "Add Player", linkTo: "/admin_players/add_player" },
   ];
 
   const logoutHandler = () => {
