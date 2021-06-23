@@ -1,131 +1,92 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaEnvelopeOpen,
-  FaUser,
-  FaCalendarTimes,
-  FaMap,
-  FaPhone,
-  FaLock,
-} from "react-icons/fa";
-const url = "https://randomuser.me/api/";
-const defaultImage = "https://randomuser.me/api/portraits/men/75.jpg";
+import { useFetch } from "./useFetch";
+import Follower from "./Follower";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [person, setPerson] = useState(null);
-  const [title, setTitle] = useState("name");
-  const [value, setValue] = useState("random person");
+  const { loading, data } = useFetch();
+  // console.log(data);
+  // data we are getting from useFetch is not data from api but an array of an array of data (paginated data)
 
-  const handleValue = (e) => {
-    if (e.target.classList.contains("icon")) {
-      // console.log(e.target.dataset.label);
-      const newTitle = e.target.dataset.label;
-      setTitle(newTitle);
-      setValue(person[newTitle]);
-    }
-  };
-
-  const getPerson = async () => {
-    const response = await fetch(url);
-    const data = await response.json();
-    const person = data.results[0];
-    const {
-      name: { first, last },
-      email,
-      phone,
-    } = person;
-    const { large: image } = person.picture;
-    const { password } = person.login;
-    const {
-      street: { number, name },
-      city,
-    } = person.location;
-    const { age } = person.dob;
-
-    const newPerson = {
-      image,
-      age,
-      phone,
-      email,
-      password,
-      street: `${number} ${name} St, ${city}`,
-      name: `${first} ${last}`,
-    };
-
-    // anytime this function is invoked, set the below states
-    setPerson(newPerson);
-    setLoading(false);
-    setTitle("name");
-    setValue(newPerson.name);
-  };
+  // to get the followers for each page, we start with page 0
+  const [page, setPage] = useState(0);
+  const [followers, setFollowers] = useState([]);
 
   useEffect(() => {
-    getPerson();
-  }, []);
+    // if loading is true, that means no data has yet been obtained, then return, meaning we use the loading state to get the get data to be displayed
+    if (loading) {
+      return;
+    }
+
+    setFollowers(data[page]);
+
+    // dependency is loading in order to get data we need
+  }, [loading, page]);
+
+  const handlePage = (index) => {
+    console.log("Your clicked button " + index);
+    setPage(index);
+  };
+
+  const prevPage = () => {
+    // console.log(data); // data is an array of arrays of data from api
+    setPage((oldPage) => {
+      let previousPage = oldPage - 1;
+
+      if (previousPage < 0) {
+        previousPage = data.length - 1;
+      }
+
+      return previousPage;
+    });
+  };
+
+  const nextPage = () => {
+    setPage((oldPage) => {
+      let nextPage = oldPage + 1;
+
+      if (nextPage > data.length - 1) {
+        nextPage = 0;
+      }
+
+      return nextPage;
+    });
+  };
 
   return (
     <main>
-      <div className="block bcg-black"></div>
-      <div className="block">
-        <div className="container">
-          <img
-            src={(person && person.image) || defaultImage}
-            alt="random user"
-            className="user-img"
-          />
-          <p className="user-title">my {title} is</p>
-          <p className="user-value">{value}</p>
-          <div className="values-list">
-            <button
-              className="icon"
-              data-label="name"
-              onMouseOver={handleValue}
-            >
-              <FaUser />
-            </button>
-
-            <button
-              className="icon"
-              data-label="email"
-              onMouseOver={handleValue}
-            >
-              <FaEnvelopeOpen />
-            </button>
-
-            <button className="icon" data-label="age" onMouseOver={handleValue}>
-              <FaCalendarTimes />
-            </button>
-
-            <button
-              className="icon"
-              data-label="street"
-              onMouseOver={handleValue}
-            >
-              <FaMap />
-            </button>
-
-            <button
-              className="icon"
-              data-label="phone"
-              onMouseOver={handleValue}
-            >
-              <FaPhone />
-            </button>
-
-            <button
-              className="icon"
-              data-label="password"
-              onMouseOver={handleValue}
-            >
-              <FaLock />
-            </button>
-          </div>
-
-          <div className="btn" type="button" onClick={getPerson}>
-            {loading ? "loading..." : "random user"}
-          </div>
-        </div>
+      <div className="section-title">
+        <h1>{loading ? "loading..." : "pagination"}</h1>
+        <div className="underline"></div>
       </div>
+      <section className="followers">
+        <div className="container">
+          {followers.map((follower) => {
+            return <Follower key={follower.id} {...follower} />;
+          })}
+        </div>
+        {/* render on buttons when data is available, i.e when loading is false */}
+        {!loading && (
+          <div className={"btn-container"}>
+            <button className="prev-btn" onClick={() => prevPage(page)}>
+              prev
+            </button>
+            {data.map((item, index) => {
+              return (
+                <button
+                  className={`page-btn ${index === page ? "active-btn" : ""}`}
+                  key={index}
+                  onClick={() => handlePage(index)}
+                >
+                  {index + 1}
+                </button>
+              );
+            })}
+            <button className="next-btn" onClick={() => nextPage(page)}>
+              next
+            </button>
+          </div>
+        )}
+      </section>
     </main>
   );
 }
