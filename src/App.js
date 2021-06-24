@@ -1,94 +1,79 @@
-import React, { useState, useEffect } from "react";
-import { useFetch } from "./useFetch";
-import Follower from "./Follower";
+import React, { Component } from "react";
 
-function App() {
-  const { loading, data } = useFetch();
-  // console.log(data);
-  // data we are getting from useFetch is not data from api but an array of an array of data (paginated data)
+import SearchBar from "./SearchBar";
+import VideoList from "./VideoList";
+import youtube from "./apis/youtube";
+import VideoDetail from "./VideoDetail";
 
-  // to get the followers for each page, we start with page 0
-  const [page, setPage] = useState(0);
-  const [followers, setFollowers] = useState([]);
-
-  useEffect(() => {
-    // if loading is true, that means no data has yet been obtained, then return, meaning we use the loading state to get the get data to be displayed
-    if (loading) {
-      return;
-    }
-
-    setFollowers(data[page]);
-
-    // dependency is loading in order to get data we need
-  }, [loading, page]);
-
-  const handlePage = (index) => {
-    console.log("Your clicked button " + index);
-    setPage(index);
+class App extends Component {
+  state = {
+    videos: [],
   };
 
-  const prevPage = () => {
-    // console.log(data); // data is an array of arrays of data from api
-    setPage((oldPage) => {
-      let previousPage = oldPage - 1;
-
-      if (previousPage < 0) {
-        previousPage = data.length - 1;
-      }
-
-      return previousPage;
+  searchWord = async (word) => {
+    const response = await youtube.get("/search", {
+      params: {
+        q: word,
+      },
+    });
+    const { items } = await response.data;
+    // console.log(items);
+    this.setState({
+      videos: items,
+      // when we make a search, automatically default the iframe to show the first item by selecting below
+      selectedVideo: items[0],
     });
   };
 
-  const nextPage = () => {
-    setPage((oldPage) => {
-      let nextPage = oldPage + 1;
+  // when the App component mounts,
+  componentDidMount() {
+    // call the function that searches for a video
+    this.searchWord("cars");
+  }
 
-      if (nextPage > data.length - 1) {
-        nextPage = 0;
-      }
-
-      return nextPage;
+  // get the selected video from the video details component (granchild) through prop-drilling
+  onVideoSelect = (video) => {
+    // console.log("video selected is ", video);
+    this.setState({
+      selectedVideo: video,
     });
   };
 
-  return (
-    <main>
-      <div className="section-title">
-        <h1>{loading ? "loading..." : "pagination"}</h1>
-        <div className="underline"></div>
-      </div>
-      <section className="followers">
-        <div className="container">
-          {followers.map((follower) => {
-            return <Follower key={follower.id} {...follower} />;
-          })}
-        </div>
-        {/* render on buttons when data is available, i.e when loading is false */}
-        {!loading && (
-          <div className={"btn-container"}>
-            <button className="prev-btn" onClick={() => prevPage(page)}>
-              prev
-            </button>
-            {data.map((item, index) => {
-              return (
-                <button
-                  className={`page-btn ${index === page ? "active-btn" : ""}`}
-                  key={index}
-                  onClick={() => handlePage(index)}
-                >
-                  {index + 1}
-                </button>
-              );
-            })}
-            <button className="next-btn" onClick={() => nextPage(page)}>
-              next
-            </button>
+  render() {
+    return (
+      <main className="ui container">
+        <section className="ui segment">
+          <SearchBar onSearch={this.searchWord} />
+        </section>
+
+        {this.state.videos.length > 0 ? (
+          <section className="ui grid">
+            <aside className="ten wide column">
+              {this.state.selectedVideo && (
+                <VideoDetail {...this.state.selectedVideo} />
+              )}
+            </aside>
+
+            <aside className="six wide column">
+              <VideoList
+                onVideoSelect={this.onVideoSelect}
+                videos={this.state.videos}
+              />
+            </aside>
+          </section>
+        ) : (
+          <div className="ui segment" style={{ height: "100vh" }}>
+            <div className="ui active dimmer">
+              <div className="ui massive text loader">Loading</div>
+            </div>
+            <p></p>
+            <p></p>
+            <p></p>
           </div>
         )}
-      </section>
-    </main>
-  );
+      </main>
+    );
+  }
 }
 
 export default App;
