@@ -1,52 +1,21 @@
-import React, { useState, useEffect } from "react";
-import data from "./data";
-import Article from "./Article";
+import React from "react";
+import { Switch, Route } from "react-router-dom";
 
-const getStorageTheme = () => {
-  let theme = "light-theme";
+import Home from "./Home";
+import Movie from "./SingleMovie";
 
-  if (localStorage.getItem("theme")) {
-    theme = localStorage.getItem("theme");
-  }
-
-  return theme;
-};
 function App() {
-  const [theme, setTheme] = useState(getStorageTheme());
-
-  useEffect(() => {
-    // target the whole document
-    // console.log(document.documentElement);
-    document.documentElement.className = theme;
-
-    // set theme on local storage
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const changeTheme = () => {
-    if (theme === "light-theme") {
-      setTheme("dark-theme");
-    } else {
-      setTheme("light-theme");
-    }
-  };
-
   return (
-    <main>
-      <nav>
-        <div className="nav-center">
-          <h1>Darkly</h1>
-          <button onClick={() => changeTheme()} className="btn">
-            toggle
-          </button>
-        </div>
-      </nav>
-      <section className="articles">
-        {data.map((item) => {
-          return <Article key={item.id} {...item} />;
-        })}
-      </section>
-    </main>
+    <Switch>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      {/* <Route path="/movies/:id">
+        <Movie />
+      </Route> */}
+      <Route path="/movies/:id" children={<Movie />} />
+      {/* <Route path="/movies/:id" component={Movie} /> */}
+    </Switch>
   );
 }
 
