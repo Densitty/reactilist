@@ -1,21 +1,14 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
-
-import Home from "./Home";
-import Movie from "./SingleMovie";
-
+import SearchForm from "./SearchForm";
+import Stories from "./Stories";
+import Buttons from "./Buttons";
 function App() {
   return (
-    <Switch>
-      <Route exact path="/">
-        <Home />
-      </Route>
-      {/* <Route path="/movies/:id">
-        <Movie />
-      </Route> */}
-      <Route path="/movies/:id" children={<Movie />} />
-      {/* <Route path="/movies/:id" component={Movie} /> */}
-    </Switch>
+    <>
+      <SearchForm />
+      <Buttons />
+      <Stories />
+    </>
   );
 }
 
