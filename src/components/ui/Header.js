@@ -6,6 +6,8 @@ import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/styles";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import { Link } from "react-router-dom";
 
 import logo from "../../assets/logo.svg";
@@ -51,40 +53,117 @@ const useStyles = makeStyles((theme) => ({
     height: "45px",
     lineHeight: "1.2",
   },
+  menu: {
+    backgroundColor: theme.palette.common.blue,
+    color: "#fff",
+    borderRadius: 0,
+  },
+  menuItem: {
+    ...theme.typography.tab,
+    opacity: 0.7,
+    "&:hover": {
+      opacity: 1,
+    },
+  },
 }));
 
 const Header = (props) => {
   const [value, setValue] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpen(false);
+  };
+
+  const menuOptions = [
+    { name: "Services", link: "/services" },
+    { name: "Custom Software Development", link: "/custom-software" },
+    { name: "Mobile App Development", link: "/mobile-apps" },
+    { name: "Website Development", link: "/websites" },
+  ];
+
+  const handleMenuItemClick = (index) => {
+    setAnchorEl(null);
+    setOpen(false);
+    setSelectedIndex(index);
+  };
+
   const classes = useStyles();
 
   useEffect(() => {
     // find the appropraite url when the page is reloaded and set the value of the index to tally with window.location.pathname
-    if (window.location.pathname === "/" && value !== 0) {
-      setValue(0);
-    }
+    switch (window.location.pathname) {
+      case "/":
+        if (value !== 0) {
+          setValue(0);
+        }
+        break;
 
-    if (window.location.pathname === "/services" && value !== 1) {
-      setValue(1);
-    }
+      case "/services":
+        if (value !== 1) {
+          setValue(1);
+        }
+        break;
 
-    if (window.location.pathname === "/revolution" && value !== 2) {
-      setValue(2);
-    }
+      case "/websites":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(3);
+        }
+        break;
 
-    if (window.location.pathname === "/about" && value !== 3) {
-      setValue(3);
-    }
+      case "/custom-software":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(1);
+        }
+        break;
 
-    if (window.location.pathname === "/contact" && value !== 4) {
-      setValue(4);
-    }
+      case "/mobile-apps":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(2);
+        }
+        break;
 
-    if (window.location.pathname === "/estimate" && value !== 5) {
-      setValue(5);
+      case "/revolution":
+        if (value !== 2) {
+          setValue(2);
+        }
+        break;
+
+      case "/about":
+        if (value !== 3) {
+          setValue(3);
+        }
+        break;
+
+      case "/contact":
+        if (value !== 4) {
+          setValue(4);
+        }
+        break;
+
+      case "/estimate":
+        if (value !== 5) {
+          setValue(5);
+        }
+        break;
+
+      default:
+        break;
     }
   }, [value]);
 
-  const handleChange = (e, value) => setValue(value);
+  const handleChange = (value) => setValue(value);
 
   return (
     <>
@@ -114,7 +193,10 @@ const Header = (props) => {
               />
 
               <Tab
+                aria-owns={anchorEl ? "simple-menu" : undefined}
+                aria-haspopup={anchorEl ? true : undefined}
                 className={classes.tab}
+                onMouseOver={handleClick}
                 label="Services"
                 component={Link}
                 to="/services"
@@ -148,6 +230,35 @@ const Header = (props) => {
             >
               Free Estimate
             </Button>
+
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              classes={{ paper: classes.menu }}
+              MenuListProps={{ onMouseLeave: handleClose }}
+              elevation={0}
+            >
+              {menuOptions.map((menu, index) => {
+                return (
+                  <MenuItem
+                    key={index}
+                    onClick={() => {
+                      handleClose();
+                      setValue(1);
+                      handleMenuItemClick(index);
+                    }}
+                    component={Link}
+                    to={menu.link}
+                    classes={{ root: classes.menuItem }}
+                    selected={index === selectedIndex && value === 1}
+                  >
+                    {menu.name}
+                  </MenuItem>
+                );
+              })}
+            </Menu>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
